@@ -1,14 +1,15 @@
 export class Mastermind {
     private readonly secret: Array<string>;
+    private static readonly CODE_LENGTH = 4;
 
     constructor(secret?: string) {
         this.secret = (secret ?? Mastermind.generateSecret()).split('');
     }
 
     private static generateSecret(): string {
-        return Math.floor(Math.random() * 10000)
+        return Math.floor(Math.random() * 10 ** this.CODE_LENGTH)
             .toString()
-            .padStart(4, '0');
+            .padStart(this.CODE_LENGTH, '0');
     }
 
     public try(code: string): string {
@@ -25,7 +26,7 @@ export class Mastermind {
     }
 
     private static isBadInput(code: string): boolean {
-        return code.length !== 4 || isNaN(Number(code)) || Number(code) % 1 !== 0;
+        return code.length !== this.CODE_LENGTH || isNaN(Number(code)) || Number(code) % 1 !== 0;
     }
 
     private findExactMatches(code: Array<string>): Array<string> {
